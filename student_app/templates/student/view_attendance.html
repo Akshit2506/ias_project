@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Attendance Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f8fc;
+            padding: 40px;
+        }
+
+        .container {
+            background: white;
+            max-width: 1000px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3, h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0 40px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px 14px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 16px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .highlight {
+            font-weight: bold;
+        }
+
+        .final-summary {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>✅ FINAL FORMAT – Student Report</h2>
+
+        <!-- Student Details -->
+        <div class="section">
+            <h3>👤 Student Details</h3>
+            <p><span class="highlight">Name:</span> {{ student.name }}</p>
+            <p><span class="highlight">Roll No.:</span> {{ student.roll_number }}</p>
+            <p><span class="highlight">Division:</span> {{ student.division }}</p>
+        </div>
+
+        <!-- Final Attendance (All Subjects) -->
+        <div class="section">
+            <h3>📊 1. Final Attendance (All Subjects)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Total Attendance (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for subject, percentage in final_attendance_by_subject.items %}
+                        <tr>
+                            <td>{{ subject }}</td>
+                            <td>{{ percentage }}%</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p class="final-summary">✅ <strong>Final Average Attendance:</strong> {{ final_average_attendance }}%</p>
+        </div>
+
+        <!-- Back Button -->
+        <a href="{% url 'student_app:student_dashboard' %}" class="back-btn">⬅ Back to Dashboard</a>
+    </div>
+</body>
+</html>

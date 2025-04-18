@@ -1,0 +1,154 @@
+<form method="POST">
+    {% csrf_token %}
+
+    <!-- Subject Dropdown -->
+    <label for="subject">Select Subject</label>
+    <select name="subject" id="subject" required>
+        <option value="">Select a subject</option>
+        {% for subject in subjects %}
+        <option value="{{ subject.id }}">{{ subject.name }}</option>
+        {% endfor %}
+    </select>
+
+    <!-- Student Dropdown -->
+    <label for="student">Select Student</label>
+    <select name="student" id="student" required disabled>
+        <option value="">Select a student</option>
+        {% for student in students %}
+        <option value="{{ student.id }}">{{ student.name }}</option>
+        {% endfor %}
+    </select>
+
+    <!-- Marks Input Section -->
+    <div class="student-assessment" style="display: none;">
+        {% for student in students %}
+        <div class="student-form" id="form_{{ student.id }}" style="display: none;">
+            <h3>{{ student.name }}</h3>
+
+            <div class="input-group">
+                <label for="prerequisite_{{ student.id }}">Prerequisite Marks</label>
+                <input type="number" name="prerequisite_{{ student.id }}" min="0" max="100" required>
+            </div>
+
+            <div class="input-group">
+                <label for="ut1_{{ student.id }}">Unit Test 1</label>
+                <input type="number" name="ut1_{{ student.id }}" min="0" max="100" required>
+            </div>
+
+            <div class="input-group">
+                <label for="ut2_{{ student.id }}">Unit Test 2</label>
+                <input type="number" name="ut2_{{ student.id }}" min="0" max="100" required>
+            </div>
+
+            <div class="input-group">
+                <label for="ut3_{{ student.id }}">Unit Test 3</label>
+                <input type="number" name="ut3_{{ student.id }}" min="0" max="100" required>
+            </div>
+
+            <div class="input-group">
+                <label for="insem_{{ student.id }}">Insem Marks</label>
+                <input type="number" name="insem_{{ student.id }}" min="0" max="100" required>
+            </div>
+
+            <div class="input-group">
+                <label for="pr_marks_{{ student.id }}">PR Marks</label>
+                <input type="number" name="pr_marks_{{ student.id }}" min="0" max="100" required>
+            </div>
+
+            <div class="input-group">
+                <label for="or_marks_{{ student.id }}">OR Marks</label>
+                <input type="number" name="or_marks_{{ student.id }}" min="0" max="100" required>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <button type="submit">Submit Assessment</button>
+</form>
+
+<!-- Success & Error Messages -->
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<!-- CSS Styling -->
+<style>
+    .student-form {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        background-color: #f9f9f9;
+    }
+
+    .input-group {
+        margin-bottom: 10px;
+    }
+
+    .input-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    .messages {
+        margin-top: 15px;
+        padding: 10px;
+        list-style: none;
+    }
+
+    .messages li {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-left: 4px solid green;
+        background-color: #e6ffe6;
+    }
+
+    .messages li.error {
+        border-left-color: red;
+        background-color: #ffe6e6;
+    }
+</style>
+
+<!-- JavaScript: Show/Hide Student Forms -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const subjectDropdown = document.getElementById("subject");
+        const studentDropdown = document.getElementById("student");
+        const assessmentSection = document.querySelector('.student-assessment');
+
+        subjectDropdown.addEventListener("change", function () {
+            studentDropdown.disabled = !this.value;
+            assessmentSection.style.display = this.value ? "block" : "none";
+        });
+
+        studentDropdown.addEventListener("change", function () {
+            const allForms = document.querySelectorAll(".student-form");
+            allForms.forEach(form => form.style.display = "none");
+
+            const selectedForm = document.getElementById("form_" + this.value);
+            if (selectedForm) selectedForm.style.display = "block";
+        });
+    });
+</script>

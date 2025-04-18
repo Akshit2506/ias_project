@@ -1,0 +1,96 @@
+{% extends 'teacher/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="dashboard-title">📄 Teacher Dashboard – Generate Student Report</h1>
+
+    <!-- Student + Month Selection Form -->
+    <form method="POST" action="{% url 'teacher:generate_report' student.id %}">
+        {% csrf_token %}
+
+        <!-- Student Dropdown -->
+        <div class="form-group">
+            <label for="student">👤 Select Student:</label>
+            <select id="student" name="student" class="form-control" required>
+                <option value="">-- Choose a Student --</option>
+                {% for student in students %}
+                    <option value="{{ student.id }}"
+                        {% if selected_student and student.id == selected_student.id %}selected{% endif %}>
+                        {{ student.name }} (Roll No: {{ student.roll_no }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Month Dropdown -->
+        <div class="form-group mt-3">
+            <label for="month">📅 Select Month:</label>
+            <select id="month" name="month" class="form-control" required>
+                <option value="">-- Choose a Month --</option>
+                {% for month in months %}
+                    <option value="{{ month }}"
+                        {% if month == selected_month %}selected{% endif %}>{{ month }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" name="generate_pdf" class="btn btn-primary mt-3">📥 Generate PDF Report</button>
+    </form>
+
+    <hr>
+
+    <!-- Info Box -->
+    <div class="info-box">
+        <p>📌 Select a student and a month, then click the button to download a full report of their:</p>
+        <ul>
+            <li>✔️ Subject-wise Attendance (Selected Month)</li>
+            <li>✔️ Special Leaves (Medical / Sports / Cultural)</li>
+            <li>✔️ Assessment Marks (UT1, UT2, UT3, INSEM, PR/OR)</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Optional Styling -->
+<style>
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+    .dashboard-title {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+    }
+    .form-group label {
+        font-weight: 600;
+        font-size: 16px;
+    }
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        font-size: 15px;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .info-box {
+        background: #fff3cd;
+        border: 1px solid #ffeeba;
+        padding: 20px;
+        border-radius: 6px;
+        margin-top: 30px;
+        font-size: 15px;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'teacher/base.html' %}
+
+{% block content %}
+<h2 style="text-align: center;">📋 Special Attendance Operation</h2>
+<form method="post">
+  <label for="student">🎓 Select Student:</label>
+  <select name="student" id="student" required>
+    <option value="">--Select Student--</option>
+    {% for student in students %}
+      <option value="{{ student.id }}">{{ student.name }} ({{ student.roll_number }})</option>
+    {% endfor %}
+  </select>
+  <br><br>
+
+  <label for="subject">🎓 Select Subject:</label>
+  <select name="subject" id="subject" required>
+    <option value="">--Select Subject--</option>
+    {% for subject in subjects %}
+      <option value="{{ subject.id }}">{{ subject.name }}</option>
+    {% endfor %}
+  </select>
+  <br><br>
+
+  {% csrf_token %}
+  <div style="max-width: 800px; margin: auto;">
+    {% for i in "1234" %}
+    <div style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; border-radius: 10px;">
+      <h3>Semester {{ i }}</h3>
+      <label for="month_{{ i }}">📅 Select Month:</label>
+      <select name="month_{{ i }}" required>
+        <option value="">--Select--</option>
+        {% for month in months %}
+        <option value="{{ month }}">{{ month }}</option>
+        {% endfor %}
+      </select>
+      <br><br>
+
+      <label>✅ Lectures Attended:</label>
+      <input type="number" name="attended_{{ i }}" id="attended_{{ i }}" required min="0" oninput="calculatePercentage('{{ i }}')" placeholder="Enter attended lectures">
+      <span id="attended-error-{{ i }}" style="color: red; display: none;">Attended lectures cannot exceed total lectures.</span>
+      <br><br>
+
+      <label>🧮 Total Lectures Conducted:</label>
+      <input type="number" name="total_{{ i }}" id="total_{{ i }}" required min="1" oninput="calculatePercentage('{{ i }}')" placeholder="Enter total lectures">
+      <span id="total-error-{{ i }}" style="color: red; display: none;">Total lectures must be greater than 0.</span>
+      <br><br>
+
+      <label>📊 Attendance %:</label>
+      <input type="text" id="percentage_{{ i }}" readonly style="background-color: #f0f0f0;">
+    </div>
+    {% endfor %}
+
+    <button type="submit" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">💾 Submit Attendance</button>
+  </div>
+</form>
+
+<script>
+  function calculatePercentage(i) {
+    const attended = parseFloat(document.getElementById('attended_' + i).value);
+    const total = parseFloat(document.getElementById('total_' + i).value);
+    const percentField = document.getElementById('percentage_' + i);
+    const attendedError = document.getElementById('attended-error-' + i);
+    const totalError = document.getElementById('total-error-' + i);
+
+    // Reset error messages
+    attendedError.style.display = 'none';
+    totalError.style.display = 'none';
+
+    if (!isNaN(attended) && !isNaN(total) && total > 0) {
+      if (attended > total) {
+        attendedError.style.display = 'inline';
+        percentField.value = '';
+      } else {
+        const percentage = ((attended / total) * 100).toFixed(2);
+        percentField.value = percentage + '%';
+      }
+    } else {
+      percentField.value = '';
+    }
+
+    // Ensure total is not negative or zero
+    if (total <= 0) {
+      totalError.style.display = 'inline';
+    }
+  }
+</script>
+{% endblock %}

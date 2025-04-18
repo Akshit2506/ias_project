@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Attendance Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f8fc;
+            padding: 40px;
+        }
+
+        .container {
+            background: white;
+            max-width: 1000px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3, h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0 40px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px 14px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        .highlight {
+            font-weight: bold;
+        }
+
+        .final-summary {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>✅ FINAL FORMAT – Student Report</h2>
+
+        <!-- Student Details -->
+        <div class="section">
+            <h3>👤 Student Details</h3>
+            <p><span class="highlight">Name:</span> Akshit Somkure</p>
+            <p><span class="highlight">Roll No.:</span> 2</p>
+            <p><span class="highlight">Division:</span> A</p>
+        </div>
+
+        <!-- Monthly Attendance Summary -->
+        <div class="section">
+            <h3>📅 1. Monthly Attendance Summary</h3>
+            <h4>✅ Month: January</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Attendance (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Engineering Mathematics III</td>
+                        <td>49.11%</td>
+                    </tr>
+                    <tr>
+                        <td>Principles of Programming Languages</td>
+                        <td>45.95%</td>
+                    </tr>
+                    <tr>
+                        <td>Data Structures and Algorithms</td>
+                        <td>47.27%</td>
+                    </tr>
+                    <tr>
+                        <td>Microprocessor</td>
+                        <td>50.00%</td>
+                    </tr>
+                    <tr>
+                        <td>Software Engineering</td>
+                        <td>49.58%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Total Attendance (All Months Combined) -->
+        <div class="section">
+            <h3>📊 2. Total Attendance (All Months Combined)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Total Attendance (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Engineering Mathematics III</td>
+                        <td>49.11%</td>
+                    </tr>
+                    <tr>
+                        <td>Principles of Programming Languages</td>
+                        <td>45.95%</td>
+                    </tr>
+                    <tr>
+                        <td>Data Structures and Algorithms</td>
+                        <td>47.27%</td>
+                    </tr>
+                    <tr>
+                        <td>Microprocessor</td>
+                        <td>50.00%</td>
+                    </tr>
+                    <tr>
+                        <td>Software Engineering</td>
+                        <td>49.58%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="final-summary">✅ <strong>Final Average Attendance:</strong> 48.38%</p>
+        </div>
+
+        <!-- Back Button -->
+        <a href="#" class="back-btn">⬅ Back to Dashboard</a>
+    </div>
+</body>
+</html>

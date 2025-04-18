@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Dashboard</title>
+  <link rel="stylesheet" href="path/to/your/css/file.css"> <!-- Your stylesheets -->
+</head>
+<body>
+  <!-- Conditionally show Teacher Dashboard if not on the Special Attendance page -->
+  {% if not is_special_attendance %}
+    <nav>
+      <ul>
+        <li><a href="/teacher/dashboard">Dashboard</a></li>
+        <li><a href="/teacher/mark-attendance">Mark Attendance</a></li>
+        <li><a href="/teacher/special-attendance">Special Attendance</a></li>
+        <li><a href="/teacher/logout">Logout</a></li>
+      </ul>
+    </nav>
+  {% endif %}
+
+  <div class="content">
+    {% block content %}
+    <!-- This block will be replaced by the specific page content -->
+    {% endblock %}
+  </div>
+</body>
+</html>

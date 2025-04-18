@@ -1,0 +1,51 @@
+<!-- {% extends 'base.html' %}
+
+{% block content %}
+<h2 style="text-align: center;">📋 Special Attendance Operation</h2>
+<form method="post">
+  {% csrf_token %}
+  <div style="max-width: 800px; margin: auto;">
+    {% for i in "1234" %}
+    <div style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; border-radius: 10px;">
+      <h3>Semester {{ i }}</h3>
+      <label for="month_{{ i }}">📅 Select Month:</label>
+      <select name="month_{{ i }}" required>
+        <option value="">--Select--</option>
+        {% for month in months %}
+        <option value="{{ month }}">{{ month }}</option>
+        {% endfor %}
+      </select>
+      <br><br>
+
+      <label>✅ Lectures Attended:</label>
+      <input type="number" name="attended_{{ i }}" id="attended_{{ i }}" required min="0" oninput="calculatePercentage('{{ i }}')">
+      <br><br>
+
+      <label>🧮 Total Lectures Conducted:</label>
+      <input type="number" name="total_{{ i }}" id="total_{{ i }}" required min="1" oninput="calculatePercentage('{{ i }}')">
+      <br><br>
+
+      <label>📊 Attendance %:</label>
+      <input type="text" id="percentage_{{ i }}" readonly style="background-color: #f0f0f0;">
+    </div>
+    {% endfor %}
+
+    <button type="submit" style="padding: 10px 20px;">💾 Submit Attendance</button>
+  </div>
+</form>
+
+<script>
+  function calculatePercentage(i) {
+    const attended = parseFloat(document.getElementById('attended_' + i).value);
+    const total = parseFloat(document.getElementById('total_' + i).value);
+    const percentField = document.getElementById('percentage_' + i);
+
+    if (!isNaN(attended) && !isNaN(total) && total > 0) {
+      const percentage = ((attended / total) * 100).toFixed(2);
+      percentField.value = percentage + '%';
+    } else {
+      percentField.value = '';
+    }
+  }
+</script>
+{% endblock %} -->

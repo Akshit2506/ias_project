@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 30px;
+            background-color: #f0f4f8;
+        }
+
+        .dashboard-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .button {
+            display: inline-block;
+            margin: 15px 10px;
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .logout {
+            background-color: #e53935;
+        }
+
+        .logout:hover {
+            background-color: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h2>Welcome, {{ teacher.name }}</h2>
+
+        <a href="{% url 'teacher:mark_attendance' %}" class="button">Mark Attendance</a>
+        <a href="{% url 'teacher:special_attendance' %}" class="button">Special Attendance Operation</a>
+        <a href="{% url 'teacher:upload_assessment' %}" class="button">Upload Assessment</a>
+
+        <!-- Logout form -->
+        <form action="{% url 'teacher:teacher_logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="button logout">Logout</button>
+        </form>
+    </div>
+</body>
+</html>

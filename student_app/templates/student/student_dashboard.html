@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: #ecf0f1;
+        }
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            height: 100vh;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 12px;
+            background: #34495e;
+            border-radius: 5px;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .sidebar a:hover {
+            background: #1abc9c;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body data-student-name="{{ student.name }}" data-student-roll="{{ student.roll_no }}" data-student-email="{{ student.email }}">
+    <div class="sidebar">
+        <a onclick="showSection('profile')">Profile</a>
+        <a onclick="showSection('attendance')">Attendance</a>
+        <a onclick="showSection('assessment')">Assessment</a>
+        <a onclick="logout()">Logout</a>
+    </div>
+    <div class="content">
+        <div class="header">WELCOME, <span id="studentName"></span></div>
+        <div id="mainContent" class="section">Select an option from the sidebar</div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("studentName").textContent = document.body.dataset.studentName || "Student";
+        });
+
+        function showSection(section) {
+            let content = document.getElementById("mainContent");
+            let studentName = document.body.dataset.studentName;
+            let studentRoll = document.body.dataset.studentRoll;
+            let studentEmail = document.body.dataset.studentEmail;
+
+            if (section === 'profile') {
+                content.innerHTML = `
+                    <h2>Profile Section</h2>
+                    <p><strong>Name:</strong> ${studentName}</p>
+                    <p><strong>Roll Number:</strong> ${studentRoll}</p>
+                    <p><strong>Email:</strong> ${studentEmail}</p>
+                    <img src="/static/profile.jpg" alt="Profile Picture" width="100">
+                `;
+            } else if (section === 'attendance') {
+                fetch('/student/attendance-data/')
+                    .then(response => response.json())
+                    .then(data => {
+                        let rows = Object.entries(data.attendance).map(([subject, attendance]) => `
+                            <tr><td>${subject}</td><td>${attendance}%</td></tr>
+                        `).join('');
+                        content.innerHTML = `
+                            <h2>Attendance</h2>
+                            <table border="1" width="100%">
+                                <tr><th>Subject</th><th>Attendance (%)</th></tr>
+                                ${rows}
+                            </table>
+                        `;
+                    });
+            } else if (section === 'assessment') {
+                fetch('/student/assessment-data/')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.assessment || Object.keys(data.assessment).length === 0) {
+                            content.innerHTML = `<h2>Assessment</h2><p>No assessments found for this student.</p>`;
+                            return;
+                        }
+
+                        let html = `<h2>Assessment</h2>`;
+                        for (let subject in data.assessment) {
+                            html += `<h3>${subject}</h3>`;
+                            html += `
+                                <table border="1" width="100%" style="margin-bottom: 20px;">
+                                    <tr><th>Assessment Type</th><th>Marks</th></tr>
+                            `;
+                            data.assessment[subject].forEach(entry => {
+                                html += `<tr><td>${entry.assessment_type}</td><td>${entry.marks}</td></tr>`;
+                            });
+                            html += `</table>`;
+                        }
+                        content.innerHTML = html;
+                    })
+                    .catch(error => {
+                        console.error("Error fetching assessment data:", error);
+                        content.innerHTML = `<p>Error loading assessment data.</p>`;
+                    });
+            }
+        }
+
+        function logout() {
+            window.location.href = "/logout/";
+        }
+    </script>
+</body>
+</html>
