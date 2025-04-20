@@ -7,6 +7,7 @@ class Teacher(models.Model):
     name = models.CharField(max_length=100)
     class_division = models.CharField(max_length=10)  # e.g. SE-A
     password = models.CharField(max_length=100)  # use hashing later for security
+    semester = models.CharField(max_length=100)  # Add this field to store semester info
 
     def __str__(self):
         return f"{self.name} ({self.class_division})"
@@ -122,7 +123,7 @@ class GenerateReport(models.Model):
 
     @classmethod
     def generate_report_for_teacher(cls, teacher_division, month):
-        teacher = Teacher.objects.filter(division=teacher_division).first()
+        teacher = Teacher.objects.filter(class_division=teacher_division).first()
 
         if teacher:
             # Prefetch the related student, attendance, special attendance, and assessment data

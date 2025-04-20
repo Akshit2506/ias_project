@@ -169,24 +169,9 @@ def manual_attendance_summary(request):
     return render(request, 'teacher/manual_attendance_summary.html', context)
 
 # -------------------- Special Attendance --------------------
+# Keep this version — properly defined once
 def special_attendance(request):
     teacher_id = request.session.get('teacher_id')
-    if not teacher_id:
-        return redirect('teacher:teacher_login')
-
-    teacher = Teacher.objects.get(id=teacher_id)
-    subjects = Subject.objects.filter(teacher=teacher)
-    students = Student.objects.filter(division=teacher.class_division)
-
-    months = [
-        ('01', 'January'), ('02', 'February'), ('03', 'March'),
-        ('04', 'April'), ('05', 'May'), ('06', 'June'),
-        ('07', 'July'), ('08', 'August'), ('09', 'September'),
-        ('10', 'October'), ('11', 'November'), ('12', 'December'),
-    ]
-
-    def special_attendance(request):
-     teacher_id = request.session.get('teacher_id')
     if not teacher_id:
         return redirect('teacher:teacher_login')
 
@@ -209,7 +194,6 @@ def special_attendance(request):
             subject = Subject.objects.get(id=subject_id)
             student = Student.objects.get(id=student_id)
 
-            # 4 semesters ke liye loop karke data save kar rahe hain
             for i in range(1, 5):
                 month = request.POST.get(f'month_{i}')
                 attended = request.POST.get(f'attended_{i}')
@@ -235,7 +219,7 @@ def special_attendance(request):
         'teacher': teacher,
         'subjects': subjects,
         'students': students,
-        'months': [m[1] for m in months],  # Display names only in template
+        'months': [m[1] for m in months],
         'is_special_attendance': True,
     })
 
