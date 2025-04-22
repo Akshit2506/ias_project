@@ -20,15 +20,19 @@ def student_login(request):
         name = request.POST.get('name')
         roll_number = request.POST.get('roll_number')
 
+        print(f"Attempting login with name: {name} and roll_number: {roll_number}")  # Debugging
+
         try:
             student = Student.objects.get(name=name, roll_number=roll_number)
             request.session['student_id'] = student.id  # Save student ID in session
-            return redirect('student_app:student_dashboard')  # Updated namespace
+            print(f"Student ID: {student.id} saved in session.")  # Debugging
+            return redirect('student_app:student_dashboard')
         except Student.DoesNotExist:
+            print("❌ Invalid student credentials.")  # Debugging
             messages.error(request, 'Invalid name or roll number.')
             return render(request, 'student/student_login.html')
 
-    return render(request, 'student/student_login.html')  # ✅ Yeh fix tha
+    return render(request, 'student/student_login.html')
 
 def student_dashboard(request):
     print("Student Dashboard is called")

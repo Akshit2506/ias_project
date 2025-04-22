@@ -18,28 +18,32 @@ from reportlab.lib.pagesizes import letter
 def teacher_login(request):
     if request.method == 'POST':
         form = CustomLoginForm(request.POST)
-        print("Form submitted data:", request.POST)  # NEW
+        print("Form submitted data:", request.POST)  # Debugging
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            print("Form is valid ✅")
-            print(f"Username: {username}, Password: {password}")
-            
+            username = form.cleaned_data['username'].strip()
+            password = form.cleaned_data['password'].strip()
+
+            print(f"Attempting login with username: {username} and password: {password}")  # Debugging
+
+            # Custom authentication logic
             try:
                 teacher = Teacher.objects.get(name=username, class_division=password)
-                request.session['teacher_id'] = teacher.id
-                print("Teacher found ✅, redirecting...")
-                return redirect('teacher:dashboard')
+                request.session['teacher_id'] = teacher.id  # Storing teacher id in session
+                print(f"Teacher logged in successfully with ID: {teacher.id}")  # Debugging
+                messages.success(request, "Logged in successfully!")
+                return redirect('teacher:dashboard')  # Make sure 'teacher:dashboard' is correct
             except Teacher.DoesNotExist:
-                print("❌ Teacher not found in DB.")
+                print("❌ Teacher not found in DB or incorrect credentials.")  # Debugging
                 messages.error(request, 'Invalid login credentials.')
         else:
-            print("❌ Form is invalid.")
-            print(form.errors)  # <-- This will show WHY form is failing
+            print("❌ Form is invalid.")  # Debugging
+            print(form.errors)  # Print form errors for debugging
+            messages.error(request, 'Please fix the errors in the form.')
     else:
         form = CustomLoginForm()
 
     return render(request, 'teacher/login.html', {'form': form})
+
 
 # Teacher Dashboard View
 def teacher_dashboard(request):
