@@ -1,0 +1,20 @@
+Internal Server Error: /student/attendance-data/
+Traceback (most recent call last):
+  File "C:\Users\akshi\OneDrive\Desktop\Prototype_of_IAS\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\akshi\OneDrive\Desktop\Prototype_of_IAS\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\akshi\OneDrive\Desktop\Prototype_of_IAS\student_app\views.py", line 123, in student_attendance_data
+    return render(request, 'student/student_attendance.html', {
+        'student': attendance_data,
+    ...<5 lines>...
+        'attendance_percentage': attendance_percentage,
+    })
+  File "C:\Users\akshi\OneDrive\Desktop\Prototype_of_IAS\venv\Lib\site-packages\django\shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\akshi\OneDrive\Desktop\Prototype_of_IAS\venv\Lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "C:\Users\akshi\OneDrive\Desktop\Prototype_of_IAS\venv\Lib\site-packages\django\template\loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: student/student_attendance.html
+"GET /student/attendance-data/ HTTP/1.1" 500 145

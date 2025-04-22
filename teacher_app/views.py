@@ -56,6 +56,11 @@ def teacher_dashboard(request):
         print("✅ Teacher found:", teacher.name)  # Ye bhi terminal me print hoga
         students = Student.objects.filter(division=teacher.class_division)
         subjects = Subject.objects.filter(teacher=teacher)
+        context = {
+        'teacher': teacher,
+        'students': students,
+        'subjects': subjects,
+    }
 
         return render(request, 'teacher/teacher_dashboard.html', {
             'teacher': teacher,

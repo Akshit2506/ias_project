@@ -38,6 +38,14 @@ def student_dashboard(request):
         return redirect('student_app:student_login')  # Updated namespace
 
     student = Student.objects.get(id=student_id)
+    attendance = TotalAttendance.objects.filter(student=student)  # Fetch student attendance data
+    assessments = Assessment.objects.filter(student=student)  # Fetch student assessments data
+    
+    context = {
+        'student': student,
+        'attendance': attendance,
+        'assessments': assessments,
+    }
     return render(request, 'student/student_dashboard.html', {'student': student})
 
 def student_view_attendance(request):

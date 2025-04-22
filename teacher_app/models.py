@@ -7,7 +7,7 @@ class Teacher(models.Model):
     name = models.CharField(max_length=100)
     class_division = models.CharField(max_length=10)  # e.g. SE-A
     password = models.CharField(max_length=100)  # use hashing later for security
-    # semester = models.CharField(max_length=100)  # Add this field to store semester info
+    semester = models.CharField(max_length=100)  # ✅ Now it will accept strings like "Software Engineering"
 
     def __str__(self):
         return f"{self.name} ({self.class_division})"

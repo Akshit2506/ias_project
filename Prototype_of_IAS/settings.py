@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,12 +24,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-n06je87-mg@7b)8p-0o@(u^ne_o3zdonif9lo+ojk6jv&hwaca'
+# Instead of this:
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-key-if-needed')
+
+# Use this (safe):
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+if not SECRET_KEY:
+    raise ValueError("DJANGO_SECRET_KEY not set in environment!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['internal-assessment-system-xfhn.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'my-ias-project.onrender.com',
+    'internal-assessment-system-xfhn.onrender.com',
+    'internal-assessment-system-vgwy.onrender.com',
+    'internalassessmentsystem.onrender.com', 
+    'ias-project123.onrender.com',
+    'ias-project-23.onrender.com',
+    'ias-project.onrender.com',
+    'ias-project-1.onrender.com',  # ✅ This was missing
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -87,14 +106,16 @@ WSGI_APPLICATION = 'Prototype_of_IAS.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ias_db',
-        'USER': 'ias_user',
-        'PASSWORD': 'ias_password',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
@@ -142,7 +163,39 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/teacher/login/'
 
-SESSION_COOKIE_SECURE = False  # Set to True only if using HTTPS
+SESSION_COOKIE_SECURE = True # Set to True only if using HTTPS
 SESSION_COOKIE_DOMAIN = None 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://internal-assessment-system-xfhn.onrender.com',
+    'https://internal-assessment-system-vgwy.onrender.com'
+]
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'error.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
