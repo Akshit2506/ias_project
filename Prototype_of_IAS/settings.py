@@ -43,7 +43,8 @@ ALLOWED_HOSTS = [
     'ias-project123.onrender.com',
     'ias-project-23.onrender.com',
     'ias-project.onrender.com',
-    'ias-project-1.onrender.com',  # ✅ This was missing
+    'ias-project-1.onrender.com',
+    'ias-project-2.onrender.com',  # ✅ This was missing
     'localhost',
     '127.0.0.1',
 ]
